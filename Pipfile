@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 pytest = "*"
-psycopg = "*"
 flask = "*"
+playwright = "*"
+pytest-playwright = "*"
+psycopg = {extras = ["binary"], version = "*"}
+pytest-xprocess = "*"
 
 [dev-packages]
 autopep8 = "*"
