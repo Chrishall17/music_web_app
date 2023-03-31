@@ -15,3 +15,25 @@ class Album:
     # This method makes it look nicer when we print an Artist
     def __repr__(self):
         return f"Album({self.id}, {self.title}, {self.release_year}, {self.artist_id})"
+    
+    def is_valid(self):
+        if self.title == None or self.title == "":
+            return False
+        if self.release_year == None or not int(self.release_year):
+            return False
+        if self.artist_id == None or self.artist_id == "":
+            return False
+        return True
+    
+    def generate_errors(self):
+        errors = []
+        if self.title == None or self.title == "":
+            errors.append("Title can't be blank")
+        if self.release_year == None or self.release_year == "":
+            errors.append("Release year can't be blank")
+        if self.artist_id == None or self.artist_id == "":
+            errors.append("Artist ID can't be blank")
+        if len(errors) == 0:
+            return None
+        else:
+            return ", ".join(errors)

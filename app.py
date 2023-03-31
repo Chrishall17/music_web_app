@@ -4,7 +4,7 @@ from lib.album_repository import AlbumRepository
 from lib.album import Album
 from lib.artist_repository import ArtistRepository
 from lib.artist import Artist
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -89,6 +89,30 @@ def get_albums_id(id):
     artist = artist_repository.find(album.artist_id)
 
     return render_template("albums/index.html", album=album, artist=artist)
+
+
+@app.route("/albums/new", methods=['GET'])
+def get_new_album():
+    return render_template("/albums/new.html")
+
+
+@app.route("/albums", methods=['POST'])
+def create_album():
+    connection = get_flask_database_connection(app)
+    album_repository = AlbumRepository(connection)  
+
+    title = request.form['title']
+    release_year = request.form['release_year']
+    artist_id = request.form['artist_id']
+    album = Album(None, title, release_year, artist_id)
+
+    if not album.is_valid():
+        errors = album.generate_errors()
+        return render_template("albums/new.html", errors=errors)
+    
+    album_repository.create(album)
+
+    return redirect(f"/albums/{album.id}")
 
 
 # These lines start the server if you run this file directly

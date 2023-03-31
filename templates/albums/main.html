@@ -10,9 +10,11 @@
     <ul>
     {% for album in albums %}
       <li>
-          <a href="/albums/{{album.id}}">Visit Album 1</a>        
+          <a href="/albums/{{album.id}}">{{album.title}}</a>        
     </li>
     {% endfor %}
     </ul>
+
+    <a href="/albums/new">Add new album</a>
   </body>
 </html>

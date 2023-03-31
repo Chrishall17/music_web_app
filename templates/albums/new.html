@@ -1,0 +1,38 @@
+<!-- GET /albums -->
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <title>Albums</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>Add new album</h1>
+
+    <form action="/albums" method="POST">
+        {% if errors %}
+        <div class="t-errors">
+            Your form contained errors: {{errors}}
+        </div>
+        {% endif %}
+        
+        <p>
+            <label for="title">Title</label>
+            <br>
+            <input type="text" name="title" id="title">
+        </p>
+        <p>
+            <label for="release_year">Release Year</label>
+            <br>
+            <input type="number" name="release_year" id="release_year">
+        </p>
+        <p>
+            <label for="artist_id">Artist ID</label>
+            <br>
+            <input type="number" name="artist_id" id="artist_id">
+        </p>
+
+        <input type="submit" value="Add album">
+    </form>
+  </body>
+</html>

@@ -26,3 +26,23 @@ def test_artists_are_equal():
     album1 = Album(1, "Test Title", 0, 1)
     album2 = Album(1, "Test Title", 0, 1)
     assert album1 == album2
+
+def test_is_valid():
+    album = Album(None, "My title", 1990, 2)
+    valid = album.is_valid()
+    assert valid == True
+
+"""
+With non integer convertible string release year
+It is not valid
+"""
+def test_is_not_valid_with_bad_release_year():
+    album1 = Album(None, "My title", "2000", 1)
+    valid1 = album1.is_valid()
+    assert valid1 == False
+    album2 = Album(None, "My title", None, 1)
+    valid2 = album2.is_valid()
+    assert valid2 == False
+    album3 = Album(None, "My title", "fred", 1)
+    valid3 = album3.is_valid()
+    assert valid3 == False

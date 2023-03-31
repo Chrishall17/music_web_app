@@ -107,14 +107,14 @@ def test_get_albums(page, test_web_address, db_connection):
 def test_visit_album_show_page(page, test_web_address, db_connection):
     db_connection.seed("seeds/record_store.sql")
     page.goto(f"http://{test_web_address}/albums")
-    page.click("text='Visit Album 1'")
+    page.click("text='Greatest Hits'")
     h1_tag = page.locator("h1")
     expect(h1_tag).to_have_text("Greatest Hits")
 
 def test_visit_album_show_page_and_go_back(page, test_web_address, db_connection):
     db_connection.seed("seeds/record_store.sql")
     page.goto(f"http://{test_web_address}/albums")
-    page.click("text='Visit Album 1'")
+    page.click("text='Greatest Hits'")
     page.click("text='Go back'")
     h1_tag = page.locator("h1")
     expect(h1_tag).to_have_text("Albums")
@@ -136,3 +136,39 @@ def test_visit_artist_show_page(page, test_web_address, db_connection):
     expect(h1_tag).to_have_text("Pixies")
     p_tag = page.locator("p")
     expect(p_tag).to_have_text("Genre: Rock")
+
+"""
+We can create a new album
+And see it reflected in the list of albums
+"""
+def test_create_album(page, test_web_address, db_connection):
+    page.set_default_timeout(1000)
+    db_connection.seed("seeds/record_store.sql")
+    page.goto(f"http://{test_web_address}/albums")
+    page.click("text='Add new album'")
+    page.fill("input[name=title]", "Test Album")
+    page.fill("input[name=release_year]", "2000")
+    page.fill("input[name=artist_id]", "4")
+
+    page.click("text=Add album")
+
+    paragraph_tags = page.locator("p")
+    expect(paragraph_tags).to_have_text([
+        "Release year: 2000",
+        "Artist: Nina Simone",
+        "Go back"      
+    ])
+    
+
+def test_create_album_with_errors(page, test_web_address, db_connection):
+    page.set_default_timeout(1000)
+    db_connection.seed("seeds/record_store.sql")
+    page.goto(f"http://{test_web_address}/albums")
+
+    page.click("text='Add new album'")
+    page.click("text=Add album")
+
+    errors_tag = page.locator(".t-errors")
+    expect(errors_tag).to_have_text(
+        "Your form contained errors: Title can't be blank, Release year can't be blank, Artist ID can't be blank"
+    )
